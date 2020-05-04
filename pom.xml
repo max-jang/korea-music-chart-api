@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.hynixlabs</groupId>
-    <artifactId>chartbot</artifactId>
+    <artifactId>music-chart-api</artifactId>
     <version>0.1</version>
-    <name>chartbot</name>
-    <description>Charbot project for Spring Boot</description>
+    <name>music-chart-api</name>
+    <description>Korean Music Chart API</description>
 
     <properties>
         <java.version>11</java.version>

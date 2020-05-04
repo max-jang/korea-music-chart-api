@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ChartbotApplication {
+public class MusicChartApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ChartbotApplication.class, args);
+        SpringApplication.run(MusicChartApplication.class, args);
     }
 
 }
