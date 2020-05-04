@@ -23,13 +23,13 @@ public class GenieChartController {
     }
 
     @GetMapping
-    public List<Genie> getMelonChartTop100() throws Exception {
-        return genieCrawlerService.getMelonChartTop100(false, null);
+    public List<Genie> getGenieChartTop100() throws Exception {
+        return genieCrawlerService.getGenieChartTop100(false, null);
     }
 
     @GetMapping("/{artistName}")
-    public List<Genie> getMelonChartTop100ByArtistName(@PathVariable String artistName) throws Exception {
-        return genieCrawlerService.getMelonChartTop100ByArtistName(artistName);
+    public List<Genie> getGenieChartTop100ByArtistName(@PathVariable String artistName) throws Exception {
+        return genieCrawlerService.getGenieChartTop100ByArtistName(artistName);
     }
 
 

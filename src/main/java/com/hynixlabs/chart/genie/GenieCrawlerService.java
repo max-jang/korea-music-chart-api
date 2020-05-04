@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class GenieCrawlerService {
-    public List<Genie> getMelonChartTop100(boolean isSearch, String artistName) throws Exception {
+    public List<Genie> getGenieChartTop100(boolean isSearch, String artistName) throws Exception {
         String url1 = "https://www.genie.co.kr/chart/top200?rtm=Y&pg=1";
         String url2 = "https://www.genie.co.kr/chart/top200?rtm=Y&pg=2";
         Document doc1 = Jsoup.connect(url1).userAgent("Chrome").get();
@@ -106,7 +106,7 @@ public class GenieCrawlerService {
     }
 
     // 아티스트 필터링 기능
-    public List<Genie> getMelonChartTop100ByArtistName(String artistName) throws Exception {
-        return getMelonChartTop100(true, artistName);
+    public List<Genie> getGenieChartTop100ByArtistName(String artistName) throws Exception {
+        return getGenieChartTop100(true, artistName);
     }
 }
