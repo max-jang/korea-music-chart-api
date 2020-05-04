@@ -1,6 +1,7 @@
 package com.hynixlabs.chart.genie;
 
 import com.hynixlabs.chart.bot.ChartBotService;
+import com.hynixlabs.chart.common.ChartVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,12 +24,12 @@ public class GenieChartController {
     }
 
     @GetMapping
-    public List<Genie> getGenieChartTop100() throws Exception {
+    public List<ChartVO> getGenieChartTop100() throws Exception {
         return genieCrawlerService.getGenieChartTop100(false, null);
     }
 
     @GetMapping("/{artistName}")
-    public List<Genie> getGenieChartTop100ByArtistName(@PathVariable String artistName) throws Exception {
+    public List<ChartVO> getGenieChartTop100ByArtistName(@PathVariable String artistName) throws Exception {
         return genieCrawlerService.getGenieChartTop100ByArtistName(artistName);
     }
 

@@ -1,5 +1,6 @@
 package com.hynixlabs.chart.vibe;
 
+import com.hynixlabs.chart.common.ChartVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,12 +20,12 @@ public class VibeChartController {
     }
 
     @GetMapping
-    public List<Vibe> getVibeChartTop100() throws Exception {
+    public List<ChartVO> getVibeChartTop100() throws Exception {
         return vibeCrawlerService.getVibeChartTop100(false, null);
     }
 
     @GetMapping("/{artistName}")
-    public List<Vibe> getVibeChartTop100ByArtistName(@PathVariable String artistName) throws Exception {
+    public List<ChartVO> getVibeChartTop100ByArtistName(@PathVariable String artistName) throws Exception {
         return vibeCrawlerService.getVibeChartTop100ByArtistName(artistName);
     }
 

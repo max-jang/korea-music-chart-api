@@ -1,6 +1,7 @@
 package com.hynixlabs.chart.vibe;
 
 import com.hynixlabs.chart.bot.ChartBotService;
+import com.hynixlabs.chart.common.ChartVO;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,7 +21,7 @@ public class VibeCrawlerService {
         this.chartBotService = chartBotService;
     }
 
-    public List<Vibe> getVibeChartTop100(boolean isSearch, String artistName) throws Exception {
+    public List<ChartVO> getVibeChartTop100(boolean isSearch, String artistName) throws Exception {
         String url = "https://vibe.naver.com/chart/total";
         WebDriver driver = chartBotService.webDriver();
         driver.get(url);
@@ -33,12 +34,12 @@ public class VibeCrawlerService {
         List<String> songNumbers = getAttrsOfElements(doc, ".inner .icon_play", "data-track-id");
         List<String> rankStatuses = getRankStatus(doc);
 
-        List<Vibe> data = new ArrayList<>();
+        List<ChartVO> data = new ArrayList<>();
         for (int i = 0; i < titles.size(); i++) {
             String rank = rankStatuses.get(i);
             if (isSearch) { // 아티스트 필터링 검색일 때
                 if (artistNames.get(i).contains(artistName)) { // 해당 아티스트만 리스트에 추가
-                    data.add(Vibe.builder()
+                    data.add(ChartVO.builder()
                             .rank(i + 1)
                             .artistName(artistNames.get(i))
                             .title(titles.get(i))
@@ -49,7 +50,7 @@ public class VibeCrawlerService {
                             .build());
                 }
             } else { // TOP 100 차트
-                data.add(Vibe.builder()
+                data.add(ChartVO.builder()
                         .rank(i + 1)
                         .artistName(artistNames.get(i))
                         .title(titles.get(i))
@@ -79,9 +80,9 @@ public class VibeCrawlerService {
             if (elements.size() == 1) {
                 hasChangedList.add("static");
             } else if (elements.select(".blind").text().equals("순위 상승")) {
-                hasChangedList.add("상승");
+                hasChangedList.add("up");
             } else {
-                hasChangedList.add("하락");
+                hasChangedList.add("down");
             }
         }
         return hasChangedList;
@@ -95,7 +96,7 @@ public class VibeCrawlerService {
     }
 
     // 아티스트 필터링 기능
-    public List<Vibe> getVibeChartTop100ByArtistName(String artistName) throws Exception {
+    public List<ChartVO> getVibeChartTop100ByArtistName(String artistName) throws Exception {
         return getVibeChartTop100(true, artistName);
     }
 }

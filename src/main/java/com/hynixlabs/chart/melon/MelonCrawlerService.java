@@ -1,5 +1,6 @@
 package com.hynixlabs.chart.melon;
 
+import com.hynixlabs.chart.common.ChartVO;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class MelonCrawlerService {
-    public List<Melon> getMelonChartTop100(boolean isSearch, String artistName) throws Exception {
+    public List<ChartVO> getMelonChartTop100(boolean isSearch, String artistName) throws Exception {
         String url = "https://www.melon.com/chart/index.htm";
         Document doc = Jsoup.connect(url).userAgent("Chrome").get();
 
@@ -22,12 +23,12 @@ public class MelonCrawlerService {
         List<String> songNumbers = getAttrsOfElements(doc, "tr[data-song-no]", "data-song-no");
         List<String> rankStatuses = getRankStatus(doc);
 
-        List<Melon> data = new ArrayList<>();
+        List<ChartVO> data = new ArrayList<>();
         for (int i = 0; i < titles.size(); i++) {
             String[] rank = rankStatuses.get(i).split(",");
             if (isSearch) { // 아티스트 필터링 검색일 때
                 if (artistNames.get(i).contains(artistName)) { // 해당 아티스트만 리스트에 추가
-                    data.add(Melon.builder()
+                    data.add(ChartVO.builder()
                             .rank(i + 1)
                             .artistName(artistNames.get(i))
                             .title(titles.get(i))
@@ -39,7 +40,7 @@ public class MelonCrawlerService {
                             .build());
                 }
             } else { // TOP 100 차트
-                data.add(Melon.builder()
+                data.add(ChartVO.builder()
                         .rank(i + 1)
                         .artistName(artistNames.get(i))
                         .title(titles.get(i))
@@ -87,7 +88,7 @@ public class MelonCrawlerService {
     }
 
     // 아티스트 필터링 기능
-    public List<Melon> getMelonChartTop100ByArtistName(String artistName) throws Exception {
+    public List<ChartVO> getMelonChartTop100ByArtistName(String artistName) throws Exception {
         return getMelonChartTop100(true, artistName);
     }
 }
