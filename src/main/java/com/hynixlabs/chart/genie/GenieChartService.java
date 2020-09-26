@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Service
 public class GenieChartService {
     // Get Top100 Chart
-    public List<ChartVO> getGenieChartTop100(boolean isSearch, String artistName) throws Exception {
+    public List<ChartVO> getGenieChartTop100(String artistName) throws Exception {
         String url1 = "https://www.genie.co.kr/chart/top200?rtm=Y&pg=1";
         String url2 = "https://www.genie.co.kr/chart/top200?rtm=Y&pg=2";
         Document doc1 = Jsoup.connect(url1).userAgent("Chrome").get();
@@ -43,20 +43,7 @@ public class GenieChartService {
         List<ChartVO> data = new ArrayList<>();
         for (int i = 0; i < titles.size(); i++) {
             String[] rank = rankStatuses.get(i).split(",");
-            if (isSearch) { // 아티스트 필터링 검색일 때
-                if (artistNames.get(i).contains(artistName)) { // 해당 아티스트만 리스트에 추가
-                    data.add(ChartVO.builder()
-                            .rank(i + 1)
-                            .artistName(artistNames.get(i))
-                            .title(titles.get(i))
-                            .albumName(albumNames.get(i))
-                            .albumArt("https://" + albumArts.get(i).split("//")[1])
-                            .songNumber(songNumbers.get(i))
-                            .rankStatus(rank[0])
-                            .changedRank(Integer.parseInt(rank[1]))
-                            .build());
-                }
-            } else { // TOP 100 차트
+            if (artistName == null || artistNames.get(i).contains(artistName)) {
                 data.add(ChartVO.builder()
                         .rank(i + 1)
                         .artistName(artistNames.get(i))
@@ -108,11 +95,6 @@ public class GenieChartService {
         return doc.select(selector).stream()
                 .map(element -> element.attr(attr))
                 .collect(Collectors.toList());
-    }
-
-    // Filter certain artist's songs in Top100 Chart
-    public List<ChartVO> getGenieChartTop100ByArtistName(String artistName) throws Exception {
-        return getGenieChartTop100(true, artistName);
     }
 
     // Find AlbumNames By ArtistName

@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Service
 public class MelonChartService {
     // Get 24Hits Chart
-    public List<ChartVO> getMelonChartTop100() throws Exception {
+    public List<ChartVO> getMelonChartTop100(String artistName) throws Exception {
         String url = "https://www.melon.com/chart/index.htm";
         Document doc = Jsoup.connect(url).userAgent("Chrome").get();
 
@@ -28,14 +28,16 @@ public class MelonChartService {
 
         List<ChartVO> data = new ArrayList<>();
         for (int i = 0; i < titles.size(); i++) {
-            data.add(ChartVO.builder()
-                    .rank(i + 1)
-                    .artistName(artistNames.get(i))
-                    .title(titles.get(i))
-                    .albumName(albumNames.get(i))
-                    .albumArt(albumArts.get(i))
-                    .songNumber(songNumbers.get(i))
-                    .build());
+            if (artistName == null || artistNames.get(i).contains(artistName)) {
+                data.add(ChartVO.builder()
+                        .rank(i + 1)
+                        .artistName(artistNames.get(i))
+                        .title(titles.get(i))
+                        .albumName(albumNames.get(i))
+                        .albumArt(albumArts.get(i))
+                        .songNumber(songNumbers.get(i))
+                        .build());
+            }
         }
         return data;
     }

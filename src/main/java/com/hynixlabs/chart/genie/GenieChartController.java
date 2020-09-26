@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/chart/genie")
+@RequestMapping("/genie")
 public class GenieChartController {
 
     private final GenieChartService genieChartService;
@@ -22,27 +22,27 @@ public class GenieChartController {
         this.genieChartService = genieChartService;
     }
 
-    @GetMapping
+    @GetMapping("/chart")
     public ResponseFormat<ChartVO> getGenieChartTop100() throws Exception {
-        return new ResponseFormat<>(genieChartService.getGenieChartTop100(false, null));
+        return new ResponseFormat<>(genieChartService.getGenieChartTop100(null));
+    }
+    @GetMapping("/chart/{artistName}")
+    public ResponseFormat<ChartVO>  getGenieChartTop100ByArtistName(@PathVariable String artistName) throws Exception {
+        return new ResponseFormat<>(genieChartService.getGenieChartTop100(artistName));
     }
 
-    @GetMapping("/album/{artistName}")
+    @GetMapping("/albums/{artistName}")
     public ResponseFormat<DetailVO> getAlbums(@PathVariable String artistName) throws Exception {
         return new ResponseFormat<>(genieChartService.getAlbums(artistName));
     }
 
 
-    @GetMapping("/song/{albumNumber}")
+    @GetMapping("/songs/{albumNumber}")
     public ResponseFormat<DetailVO> getSongs(@PathVariable String albumNumber) throws Exception {
         return new ResponseFormat<>(genieChartService.getSongLists(albumNumber));
     }
 
 
-    @GetMapping("/{artistName}")
-    public List<ChartVO> getGenieChartTop100ByArtistName(@PathVariable String artistName) throws Exception {
-        return genieChartService.getGenieChartTop100ByArtistName(artistName);
-    }
 
 
 }

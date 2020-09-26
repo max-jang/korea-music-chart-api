@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/chart/melon")
+@RequestMapping("/melon")
 public class MelonChartController {
     private final MelonChartService melonChartService;
 
@@ -19,23 +19,26 @@ public class MelonChartController {
         this.melonChartService = melonChartService;
     }
 
-    @GetMapping
+    @GetMapping("/chart")
     public ResponseFormat<ChartVO> getMelonChartTop100() throws Exception {
-        return new ResponseFormat<>(melonChartService.getMelonChartTop100());
+        return new ResponseFormat<>(melonChartService.getMelonChartTop100(null));
     }
 
-    @GetMapping("/album/{artistName}")
+    @GetMapping("/chart/{artistName}")
+    public ResponseFormat<ChartVO> getMelonChartTop100ByArtistName(@PathVariable String artistName) throws Exception {
+        return new ResponseFormat<>(melonChartService.getMelonChartTop100(artistName));
+    }
+
+    @GetMapping("/albums/{artistName}")
     public ResponseFormat<DetailVO> getAlbums(@PathVariable String artistName) throws Exception {
         return new ResponseFormat<>(melonChartService.getAlbums(artistName));
     }
 
 
-
-    @GetMapping("/song/{albumNumber}")
+    @GetMapping("/songs/{albumNumber}")
     public ResponseFormat<DetailVO> getSongs(@PathVariable String albumNumber) throws Exception {
         return new ResponseFormat<>(melonChartService.getSongLists(albumNumber));
     }
-
 
 
 //    @GetMapping("/{artistName}")

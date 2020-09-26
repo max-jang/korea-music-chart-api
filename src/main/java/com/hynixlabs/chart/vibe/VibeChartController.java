@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/chart/vibe")
+@RequestMapping("/vibe")
 public class VibeChartController {
     private final VibeChartService vibeChartService;
 
@@ -19,17 +19,22 @@ public class VibeChartController {
         this.vibeChartService = vibeChartService;
     }
 
-    @GetMapping
+    @GetMapping("/chart")
     public ResponseFormat<ChartVO> getVibeChartTop100() throws Exception {
-        return new ResponseFormat<>(vibeChartService.getVibeChartTop100());
+        return new ResponseFormat<>(vibeChartService.getVibeChartTop100(null));
     }
 
-    @GetMapping("/album/{artistName}")
+    @GetMapping("/chart/{artistName}")
+    public ResponseFormat<ChartVO> getVibeChartTop100ByArtistName(@PathVariable String artistName) throws Exception {
+        return new ResponseFormat<>(vibeChartService.getVibeChartTop100(artistName));
+    }
+
+    @GetMapping("/albums/{artistName}")
     public ResponseFormat<DetailVO> getAlbums(@PathVariable String artistName) throws Exception {
         return new ResponseFormat<>(vibeChartService.getAlbums(artistName));
     }
 
-    @GetMapping("/song/{albumNumber}")
+    @GetMapping("/songs/{albumNumber}")
     public ResponseFormat<DetailVO> getSongs(@PathVariable String albumNumber) throws Exception {
         return new ResponseFormat<>(vibeChartService.getSongLists(albumNumber));
     }
