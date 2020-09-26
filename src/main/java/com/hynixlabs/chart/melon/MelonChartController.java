@@ -1,37 +1,47 @@
 package com.hynixlabs.chart.melon;
 
-import com.hynixlabs.chart.bot.ChartBotService;
+import com.hynixlabs.chart.common.DetailVO;
 import com.hynixlabs.chart.common.ChartVO;
+import com.hynixlabs.chart.common.ResponseFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/chart/melon")
 public class MelonChartController {
-    final ChartBotService service;
-
-    private final MelonCrawlerService melonCrawlerService;
+    private final MelonChartService melonChartService;
 
     @Autowired
-    public MelonChartController(MelonCrawlerService melonCrawlerService, ChartBotService service) {
-        this.melonCrawlerService = melonCrawlerService;
-        this.service = service;
+    public MelonChartController(MelonChartService melonChartService) {
+        this.melonChartService = melonChartService;
     }
 
     @GetMapping
-    public List<ChartVO> getMelonChartTop100() throws Exception {
-        return melonCrawlerService.getMelonChartTop100(false, null);
+    public ResponseFormat<ChartVO> getMelonChartTop100() throws Exception {
+        return new ResponseFormat<>(melonChartService.getMelonChartTop100());
     }
 
-    @GetMapping("/{artistName}")
-    public List<ChartVO> getMelonChartTop100ByArtistName(@PathVariable String artistName) throws Exception {
-        return melonCrawlerService.getMelonChartTop100ByArtistName(artistName);
+    @GetMapping("/album/{artistName}")
+    public ResponseFormat<DetailVO> getAlbums(@PathVariable String artistName) throws Exception {
+        return new ResponseFormat<>(melonChartService.getAlbums(artistName));
     }
+
+
+
+    @GetMapping("/song/{albumNumber}")
+    public ResponseFormat<DetailVO> getSongs(@PathVariable String albumNumber) throws Exception {
+        return new ResponseFormat<>(melonChartService.getSongLists(albumNumber));
+    }
+
+
+
+//    @GetMapping("/{artistName}")
+//    public List<Chart> getMelonChartTop100ByArtistName(@PathVariable String artistName) throws Exception {
+//        return melonCrawlerService.getMelonChartTop100ByArtistName(artistName);
+//    }
 
 
 }

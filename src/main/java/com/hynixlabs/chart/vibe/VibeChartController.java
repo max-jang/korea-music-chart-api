@@ -1,33 +1,36 @@
 package com.hynixlabs.chart.vibe;
 
+import com.hynixlabs.chart.common.DetailVO;
 import com.hynixlabs.chart.common.ChartVO;
+import com.hynixlabs.chart.common.ResponseFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/chart/vibe")
 public class VibeChartController {
-    private final VibeCrawlerService vibeCrawlerService;
+    private final VibeChartService vibeChartService;
 
     @Autowired
-    public VibeChartController(VibeCrawlerService vibeCrawlerService) {
-        this.vibeCrawlerService = vibeCrawlerService;
+    public VibeChartController(VibeChartService vibeChartService) {
+        this.vibeChartService = vibeChartService;
     }
 
     @GetMapping
-    public List<ChartVO> getVibeChartTop100() throws Exception {
-        return vibeCrawlerService.getVibeChartTop100(false, null);
+    public ResponseFormat<ChartVO> getVibeChartTop100() throws Exception {
+        return new ResponseFormat<>(vibeChartService.getVibeChartTop100());
     }
 
-    @GetMapping("/{artistName}")
-    public List<ChartVO> getVibeChartTop100ByArtistName(@PathVariable String artistName) throws Exception {
-        return vibeCrawlerService.getVibeChartTop100ByArtistName(artistName);
+    @GetMapping("/album/{artistName}")
+    public ResponseFormat<DetailVO> getAlbums(@PathVariable String artistName) throws Exception {
+        return new ResponseFormat<>(vibeChartService.getAlbums(artistName));
     }
 
-
+    @GetMapping("/song/{albumNumber}")
+    public ResponseFormat<DetailVO> getSongs(@PathVariable String albumNumber) throws Exception {
+        return new ResponseFormat<>(vibeChartService.getSongLists(albumNumber));
+    }
 }

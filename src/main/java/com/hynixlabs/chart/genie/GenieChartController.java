@@ -1,7 +1,8 @@
 package com.hynixlabs.chart.genie;
 
-import com.hynixlabs.chart.bot.ChartBotService;
+import com.hynixlabs.chart.common.DetailVO;
 import com.hynixlabs.chart.common.ChartVO;
+import com.hynixlabs.chart.common.ResponseFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,24 +14,34 @@ import java.util.List;
 @RestController
 @RequestMapping("/chart/genie")
 public class GenieChartController {
-    final ChartBotService service;
 
-    private final GenieCrawlerService genieCrawlerService;
+    private final GenieChartService genieChartService;
 
     @Autowired
-    public GenieChartController(GenieCrawlerService genieCrawlerService, ChartBotService service) {
-        this.genieCrawlerService = genieCrawlerService;
-        this.service = service;
+    public GenieChartController(GenieChartService genieChartService) {
+        this.genieChartService = genieChartService;
     }
 
     @GetMapping
-    public List<ChartVO> getGenieChartTop100() throws Exception {
-        return genieCrawlerService.getGenieChartTop100(false, null);
+    public ResponseFormat<ChartVO> getGenieChartTop100() throws Exception {
+        return new ResponseFormat<>(genieChartService.getGenieChartTop100(false, null));
     }
+
+    @GetMapping("/album/{artistName}")
+    public ResponseFormat<DetailVO> getAlbums(@PathVariable String artistName) throws Exception {
+        return new ResponseFormat<>(genieChartService.getAlbums(artistName));
+    }
+
+
+    @GetMapping("/song/{albumNumber}")
+    public ResponseFormat<DetailVO> getSongs(@PathVariable String albumNumber) throws Exception {
+        return new ResponseFormat<>(genieChartService.getSongLists(albumNumber));
+    }
+
 
     @GetMapping("/{artistName}")
     public List<ChartVO> getGenieChartTop100ByArtistName(@PathVariable String artistName) throws Exception {
-        return genieCrawlerService.getGenieChartTop100ByArtistName(artistName);
+        return genieChartService.getGenieChartTop100ByArtistName(artistName);
     }
 
 
