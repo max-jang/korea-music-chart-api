@@ -26,9 +26,9 @@
 멜론은 순위변경을 보여주지 않습니다. (차트개편)
 
 ## 부가기능 
-/{melon, genie, vibe}/albums/{artistName} - 해당 아티스트의 앨범들을 검색합니다.
+/{melon, genie, vibe, bugs}/albums/{artistName} - 해당 아티스트의 앨범들을 검색합니다.
 <br/>
-/{melon, genie, vibe}/songs/{albumNumber} - 해당 앨범의 노래들을 검색합니다.
+/{melon, genie, vibe, bugs}/songs/{albumNumber} - 해당 앨범의 노래들을 검색합니다.
 
 ## 예제로 보는 JSON 설명
 
