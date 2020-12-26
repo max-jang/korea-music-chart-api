@@ -11,17 +11,16 @@
 /{melon, genie, vibe}/chart/{artistName} - 특정 아티스트만 필터링하여 보여줍니다.
 
 ## 예제로 보는 JSON 설명
-<code>
-
-    "rank": 1, // 현재 순위
-    "rankStatus": "static", // 순위변동 내역(static, up, down)
-    "changedRank": 0, // 순위변동 
-    "artistName": "태민(TAEMIN)", // 아티스트명 
-    "title": "Criminal", // 노래명
-    "albumName": "Never Gonna Dance Again : Act 1 - The 3rd Album", // 앨범명
-    "albumArt": "https://cdnimg.melon.co.kr/cm2/album/images/104/86/847/10486847_20200907155042_500.jpg", //앨범아트 이미지 URL
-    "songNumber": "32908826" //노래 고유번호
-</code>
+```
+"rank": 1, // 현재 순위
+"rankStatus": "static", // 순위변동 내역(static, up, down)
+"changedRank": 0, // 순위변동 
+"artistName": "태민(TAEMIN)", // 아티스트명 
+"title": "Criminal", // 노래명
+"albumName": "Never Gonna Dance Again : Act 1 - The 3rd Album", // 앨범명
+"albumArt": "https://cdnimg.melon.co.kr/cm2/album/images/104/86/847/10486847_20200907155042_500.jpg", //앨범아트 이미지 URL
+"songNumber": "32908826" //노래 고유번호
+```
 
 
 ## 특이사항
@@ -33,18 +32,16 @@
 /{melon, genie, vibe}/songs/{albumNumber} - 해당 앨범의 노래들을 검색합니다.
 
 ## 예제로 보는 JSON 설명
-<h3>앨범검색</h3>
 
-<code>
+###앨범검색
+```
+"title": "Never Gonna Dance Again : Act 1 - The 3rd Album", - 앨범명
+"number": "10486847" - 앨범 고유번호
+```
 
-    "title": "Never Gonna Dance Again : Act 1 - The 3rd Album", - 앨범명
-    "number": "10486847" - 앨범 고유번호
-</code>
 
-<h3>노래검색</h3>
-
-<code>
-
-    "title": "Criminal", - 노래명
-    "number": "32908826" - 노래 고유번호
-</code>
+###노래검색
+```
+"title": "Criminal", - 노래명
+"number": "32908826" - 노래 고유번호
+```
