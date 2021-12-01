@@ -1,7 +1,7 @@
-package com.hynixlabs.chart.vibe;
+package com.maxjang.chart.vibe;
 
-import com.hynixlabs.chart.common.DetailVO;
-import com.hynixlabs.chart.common.ChartVO;
+import com.maxjang.chart.common.DetailVO;
+import com.maxjang.chart.common.ChartVO;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

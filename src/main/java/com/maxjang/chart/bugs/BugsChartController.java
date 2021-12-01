@@ -1,8 +1,8 @@
-package com.hynixlabs.chart.bugs;
+package com.maxjang.chart.bugs;
 
-import com.hynixlabs.chart.common.ChartVO;
-import com.hynixlabs.chart.common.DetailVO;
-import com.hynixlabs.chart.common.ResponseFormat;
+import com.maxjang.chart.common.ChartVO;
+import com.maxjang.chart.common.DetailVO;
+import com.maxjang.chart.common.ResponseFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +27,11 @@ public class BugsChartController {
         return new ResponseFormat<>(bugsChartService.getBugsChartTop100(false, null));
     }
 
+    @GetMapping("/chart/{artistName}")
+    public List<ChartVO> getBugsChartTop100ByArtistName(@PathVariable String artistName) throws Exception {
+        return bugsChartService.getBugsChartTop100(true, artistName);
+    }
+
     @GetMapping("/album/{artistName}")
     public ResponseFormat<DetailVO> getAlbums(@PathVariable String artistName) throws Exception {
         return new ResponseFormat<>(bugsChartService.getAlbums(artistName));
@@ -37,10 +42,6 @@ public class BugsChartController {
         return new ResponseFormat<>(bugsChartService.getSongLists(albumNumber));
     }
 
-    @GetMapping("/{artistName}")
-    public List<ChartVO> getBugsChartTop100ByArtistName(@PathVariable String artistName) throws Exception {
-        return bugsChartService.getBugsChartTop100ByArtistName(artistName);
-    }
 
 
 }

@@ -1,8 +1,8 @@
-package com.hynixlabs.chart.melon;
+package com.maxjang.chart.melon;
 
-import com.hynixlabs.chart.common.DetailVO;
-import com.hynixlabs.chart.common.ChartVO;
-import com.hynixlabs.chart.common.ResponseFormat;
+import com.maxjang.chart.common.DetailVO;
+import com.maxjang.chart.common.ChartVO;
+import com.maxjang.chart.common.ResponseFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,17 +34,9 @@ public class MelonChartController {
         return new ResponseFormat<>(melonChartService.getAlbums(artistName));
     }
 
-
     @GetMapping("/songs/{albumNumber}")
     public ResponseFormat<DetailVO> getSongs(@PathVariable String albumNumber) throws Exception {
         return new ResponseFormat<>(melonChartService.getSongLists(albumNumber));
     }
-
-
-//    @GetMapping("/{artistName}")
-//    public List<Chart> getMelonChartTop100ByArtistName(@PathVariable String artistName) throws Exception {
-//        return melonCrawlerService.getMelonChartTop100ByArtistName(artistName);
-//    }
-
 
 }

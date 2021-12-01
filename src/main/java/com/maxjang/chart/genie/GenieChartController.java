@@ -1,15 +1,13 @@
-package com.hynixlabs.chart.genie;
+package com.maxjang.chart.genie;
 
-import com.hynixlabs.chart.common.DetailVO;
-import com.hynixlabs.chart.common.ChartVO;
-import com.hynixlabs.chart.common.ResponseFormat;
+import com.maxjang.chart.common.DetailVO;
+import com.maxjang.chart.common.ChartVO;
+import com.maxjang.chart.common.ResponseFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/genie")
@@ -35,7 +33,6 @@ public class GenieChartController {
     public ResponseFormat<DetailVO> getAlbums(@PathVariable String artistName) throws Exception {
         return new ResponseFormat<>(genieChartService.getAlbums(artistName));
     }
-
 
     @GetMapping("/songs/{albumNumber}")
     public ResponseFormat<DetailVO> getSongs(@PathVariable String albumNumber) throws Exception {

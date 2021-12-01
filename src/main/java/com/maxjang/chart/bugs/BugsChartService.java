@@ -1,7 +1,7 @@
-package com.hynixlabs.chart.genie;
+package com.maxjang.chart.bugs;
 
-import com.hynixlabs.chart.common.DetailVO;
-import com.hynixlabs.chart.common.ChartVO;
+import com.maxjang.chart.common.ChartVO;
+import com.maxjang.chart.common.DetailVO;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -9,41 +9,44 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
-public class GenieChartService {
+public class BugsChartService {
     // Get Top100 Chart
-    public List<ChartVO> getGenieChartTop100(String artistName) throws Exception {
-        String url1 = "https://www.genie.co.kr/chart/top200?rtm=Y&pg=1";
-        String url2 = "https://www.genie.co.kr/chart/top200?rtm=Y&pg=2";
+    public List<ChartVO> getBugsChartTop100(boolean isSearch, String artistName) throws Exception {
+        String url1 = "https://music.bugs.co.kr/chart";
         Document doc1 = Jsoup.connect(url1).userAgent("Chrome").get();
-        Document doc2 = Jsoup.connect(url2).userAgent("Chrome").get();
 
-        List<String> artistNames = getTextsOfElements(doc1, "table .artist");
-        artistNames.addAll(getTextsOfElements(doc2, "table .artist"));
+        List<String> artistNames = getTextsOfElements(doc1, "p.artist");
 
-        List<String> titles = getTextsOfElements(doc1, "table .title");
-        titles.addAll(getTextsOfElements(doc2, "table .title"));
+        List<String> titles = getTextsOfElements(doc1, "p.title");
 
-        List<String> albumNames = getTextsOfElements(doc1, "table .albumtitle");
-        albumNames.addAll(getTextsOfElements(doc2, "table .albumtitle"));
+        List<String> albumNames = getTextsOfElements(doc1, ".left .album");
 
-        List<String> albumArts = getAttrsOfElements(doc1, "table .cover img", "src");
-        albumArts.addAll(getAttrsOfElements(doc2, "table .cover img", "src"));
+        List<String> albumArts = getAttrsOfElements(doc1, ".thumbnail img", "src");
 
-        List<String> songNumbers = getAttrsOfElements(doc1, "table tr[songid]", "songid");
-        songNumbers.addAll(getAttrsOfElements(doc2, "table tr[songid]", "songid"));
+        List<String> songNumbers = getAttrsOfElements(doc1, ".trackList tbody > tr", "trackid");
 
         List<String> rankStatuses = getRankStatus(doc1);
-        rankStatuses.addAll(getRankStatus(doc2));
 
         List<ChartVO> data = new ArrayList<>();
         for (int i = 0; i < titles.size(); i++) {
             String[] rank = rankStatuses.get(i).split(",");
-            if (artistName == null || artistNames.get(i).contains(artistName)) {
+            if (isSearch) { // 아티스트 필터링 검색일 때
+                if (artistNames.get(i).contains(artistName)) { // 해당 아티스트만 리스트에 추가
+                    data.add(ChartVO.builder()
+                            .rank(i + 1)
+                            .artistName(artistNames.get(i))
+                            .title(titles.get(i))
+                            .albumName(albumNames.get(i))
+                            .albumArt("https://" + albumArts.get(i).split("//")[1])
+                            .songNumber(songNumbers.get(i))
+                            .rankStatus(rank[0])
+                            .changedRank(Integer.parseInt(rank[1]))
+                            .build());
+                }
+            } else { // TOP 100 차트
                 data.add(ChartVO.builder()
                         .rank(i + 1)
                         .artistName(artistNames.get(i))
@@ -69,20 +72,21 @@ public class GenieChartService {
     // Get RankStatus
     private List<String> getRankStatus(Document doc) {
         List<String> hasChangedList = new ArrayList<>();
-        for (Element element : doc.select("table span.rank>span.rank>span")) {
-            String className = element.className();
-            String text = element.ownText();
+        for (Element element : doc.select(".byChart tbody .ranking p")) {
+            String className = element.className().split(" ")[1];
+            String text = element.select("em").text();
             switch (className) {
-                case "rank-none":
+                case "none":
                     hasChangedList.add("static,0");
                     break;
-                case "rank-up":
+                case "up":
                     hasChangedList.add("up," + text);
                     break;
-                case "rank-down":
+                case "down":
                     hasChangedList.add("down," + text);
                     break;
-                case "rank-new":
+                case "new":
+                case "renew":
                     hasChangedList.add("new,0"); // 진입
                     break;
             }
@@ -99,31 +103,29 @@ public class GenieChartService {
 
     // Find AlbumNames By ArtistName
     public List<DetailVO> getAlbums(String artistName) throws Exception {
-        String url = "https://www.genie.co.kr/search/searchAlbum?query=" +
-                artistName;
+        String url = "https://music.bugs.co.kr/search/album?q="
+                + artistName
+                + "&target=ARTIST_ONLY&flac_only=false&sort=A";
         Document doc = Jsoup.connect(url).userAgent("Chrome").get();
         List<DetailVO> data = new ArrayList<>();
-        for (Element element : doc.select("dt > a")) {
-            Matcher m = Pattern.compile("fnViewAlbumLayer\\('(.*?)'\\)").matcher(element.attr("onclick"));
-            while (m.find()) {
+        for (Element element : doc.select(".albumInfo")) {
                 data.add(DetailVO.builder()
-                        .title(element.text())
-                        .number(m.group(1))
+                        .title(element.select(".albumTitle").text())
+                        .number(element.attr("albumid"))
                         .build());
-            }
         }
         return data;
     }
 
     // Find Songs By AlbumNumber
     public List<DetailVO> getSongLists(String albumNumber) throws Exception {
-        String url = "https://www.genie.co.kr/detail/albumInfo?axnm=" + albumNumber;
+        String url = "https://music.bugs.co.kr/album/" + albumNumber;
         Document doc = Jsoup.connect(url).userAgent("Chrome").get();
         List<DetailVO> data = new ArrayList<>();
-        for (Element element : doc.select("tbody > .list")) {
+        for (Element element : doc.select(".track tbody tr")) {
             data.add(DetailVO.builder()
                     .title(element.select(".title").text())
-                    .number(element.attr("songid"))
+                    .number(element.attr("trackid"))
                     .build());
         }
         return data;

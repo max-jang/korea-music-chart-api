@@ -1,4 +1,4 @@
-package com.hynixlabs.chart;
+package com.maxjang.chart;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

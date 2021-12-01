@@ -1,4 +1,4 @@
-package com.hynixlabs.chart.common;
+package com.maxjang.chart.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

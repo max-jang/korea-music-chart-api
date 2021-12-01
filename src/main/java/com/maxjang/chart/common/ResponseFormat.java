@@ -1,4 +1,4 @@
-package com.hynixlabs.chart.common;
+package com.maxjang.chart.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

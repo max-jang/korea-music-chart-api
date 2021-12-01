@@ -1,8 +1,8 @@
-package com.hynixlabs.chart.vibe;
+package com.maxjang.chart.vibe;
 
-import com.hynixlabs.chart.common.DetailVO;
-import com.hynixlabs.chart.common.ChartVO;
-import com.hynixlabs.chart.common.ResponseFormat;
+import com.maxjang.chart.common.DetailVO;
+import com.maxjang.chart.common.ChartVO;
+import com.maxjang.chart.common.ResponseFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

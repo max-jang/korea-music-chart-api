@@ -1,7 +1,7 @@
-package com.hynixlabs.chart.melon;
+package com.maxjang.chart.melon;
 
-import com.hynixlabs.chart.common.DetailVO;
-import com.hynixlabs.chart.common.ChartVO;
+import com.maxjang.chart.common.DetailVO;
+import com.maxjang.chart.common.ChartVO;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -48,7 +48,6 @@ public class MelonChartService {
                 .map(Element::text)
                 .collect(Collectors.toList());
     }
-
 
     // Get tag attribute values
     private List<String> getAttrsOfElements(Document doc, String selector, String attr) {
